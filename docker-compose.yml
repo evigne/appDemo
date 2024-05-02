@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:12
+    environment:
+      POSTGRES_DB: spacedb
+      POSTGRES_USER: vigneshwarane
+      POSTGRES_PASSWORD: vignesh
+    ports:
+      - '5432:5432'
+
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', 'vigneshwarane', '-d', 'spacedb']
+      interval: 5s
+      timeout: 10s
+      retries: 5
+
+  # Flask Backend
+  backend:
+    build:
+      context: ./be
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URI: postgresql://vigneshwarane:vignesh@postgres/spacedb
+    ports:
+      - '5000:5000'
+    # command: ['sh', '-c', 'python seed_database.py && python app.py']
+
+  # #Data seeding
+  # db-seeder:
+  #   build:
+  #     context: ./be
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #   environment:
+  #     DATABASE_URI: postgresql://vigneshwarane:vignesh@postgres/spacedb
+  #   command: python seed_database.py
+
+  # Angular Frontend
+  frontend:
+    build:
+      context: ./fe
+    depends_on:
+      - backend
+    ports:
+      - '4200:4200'
+    command: ['ng', 'serve', '--host', '0.0.0.0']
+    environment:
+      - BACKEND_URL=http://backend:5000

@@ -1,0 +1,27 @@
+<ng-container *ngIf="subtree">
+  <ul>
+    <li *ngFor="let node of subtree">
+      <span>{{ node.name }}</span
+      ><span class="created-at-info"
+        >(Created at: {{ node.created_at | relativeTime }})</span
+      >
+      <ul *ngIf="node.properties.length">
+        <li *ngFor="let prop of node.properties">
+          <div class="line-item">
+            <span [ngStyle]="{ color: getPropColor(prop.value) }">
+              {{ prop.key }}: {{ prop.value }}
+              <span class="created-at-info"
+                >(Created at: {{ prop.created_at | relativeTime }})</span
+              >
+            </span>
+
+            <mat-icon (click)="openConfirmDialog()" class="delete-icon"
+              >delete</mat-icon
+            >
+          </div>
+        </li>
+      </ul>
+      <app-card *ngIf="node.children" [subtree]="node.children"></app-card>
+    </li>
+  </ul>
+</ng-container>

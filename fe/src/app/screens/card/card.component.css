@@ -1,0 +1,30 @@
+.created-at-info {
+  margin-left: 40px;
+  font-size: smaller;
+}
+
+/* .delete-button {
+  width: 24px;
+  height: 24px;
+  font-size: 4px;
+}
+.delete-button .mat-icon {
+  margin: 0;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+} */
+
+.delete-icon {
+  font-size: 20px;
+  color: gray;
+}
+
+.delete-icon:hover {
+  color: black;
+  cursor: pointer;
+}
+
+.line-item {
+  display: flex;
+}
