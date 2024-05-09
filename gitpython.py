@@ -40,3 +40,27 @@ if not repo.bare and repo.remotes:
     print(remote_branches)
 else:
     print("Could not load the repository or no remotes found.")
+    
+    
+    
+    import gitlab
+
+# Replace with your GitLab server URL and personal access token
+GITLAB_URL = 'https://gitlab.com'
+ACCESS_TOKEN = 'your_personal_access_token'
+PROJECT_ID = 'your_project_id'  # Replace with the numeric project ID
+
+# Initialize the GitLab connection
+gl = gitlab.Gitlab(url=GITLAB_URL, private_token=ACCESS_TOKEN)
+
+# Retrieve the specific project
+project = gl.projects.get(PROJECT_ID)
+
+# Retrieve all branches in the project
+branches = project.branches.list(all=True)
+
+# Extract the branch names
+branch_names = [branch.name for branch in branches]
+
+# Print or use the list of branch names
+print(branch_names)
