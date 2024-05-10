@@ -93,3 +93,22 @@ branch_names = [branch.name for branch in branches]
 
 # Print or use the list of branch names
 print(branch_names)
+
+
+import subprocess
+
+# Replace this with the HTTPS URL of your Git repository
+repo_url = "https://github.com/user/repo.git"
+
+# Use subprocess to execute the git command
+try:
+    output = subprocess.check_output(['git', 'ls-remote', '--heads', repo_url], text=True)
+    # Parse the output to extract branch names
+    branches = [line.split('\t')[1].replace('refs/heads/', '') for line in output.strip().split('\n')]
+
+    # Print the list of branches
+    print("Branches:")
+    for branch in branches:
+        print(branch)
+except subprocess.CalledProcessError as e:
+    print(f"Error occurred while running git command: {e}")
