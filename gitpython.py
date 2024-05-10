@@ -42,8 +42,7 @@ else:
     print("Could not load the repository or no remotes found.")
     
     
-    
-    import gitlab
+import gitlab
 
 # Replace with your GitLab server URL and personal access token
 GITLAB_URL = 'https://gitlab.com'
@@ -57,6 +56,36 @@ gl = gitlab.Gitlab(url=GITLAB_URL, private_token=ACCESS_TOKEN)
 project = gl.projects.get(PROJECT_ID)
 
 # Retrieve all branches in the project
+branches = project.branches.list(all=True)
+
+# Extract the branch names
+branch_names = [branch.name for branch in branches]
+
+# Print or use the list of branch names
+print(branch_names)
+
+
+
+import gitlab
+from urllib.parse import urlparse
+
+# Replace with your GitLab server URL and personal access token
+GITLAB_URL = 'https://gitlab.com'
+ACCESS_TOKEN = 'your_personal_access_token'
+REPO_URL = 'https://gitlab.com/group/project-name'  # Replace with your repo URL
+
+# Extract the group and project name from the URL
+parsed_url = urlparse(REPO_URL)
+_, group, project_name = parsed_url.path.strip('/').split('/')
+
+# Initialize GitLab API connection
+gl = gitlab.Gitlab(url=GITLAB_URL, private_token=ACCESS_TOKEN)
+
+# Retrieve the project using the namespace (group/project-name format)
+project_namespace = f"{group}/{project_name}"
+project = gl.projects.get(project_namespace)
+
+# Fetch all branches in the project
 branches = project.branches.list(all=True)
 
 # Extract the branch names
